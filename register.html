@@ -1,0 +1,196 @@
+<?php
+require('connection.php');
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>healthix</title>
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/datepicker3.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+
+<!--Icons-->
+<script src="js/lumino.glyphs.js"></script>
+
+</head>
+
+<body ng-app="myApp">
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				
+				<ul class="user-menu">
+					<li class="dropdown pull-right">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> User <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Profile</a></li>
+							<li><a href="#"><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"></use></svg> Settings</a></li>
+							<li><a href="#"><svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Logout</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+							
+		</div><!-- /.container-fluid -->
+	</nav>
+		
+		<div ng-controller="side_bar_menu">
+		<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+		<br /><br /><br />
+		<ul class="nav menu">
+			<li  ng-model="home"><a><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard</a></li>
+			
+			<li ng-model="users"><a> <svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Users</a></li>
+			<br />
+
+			 <button class="btn btn-primary"  ng-click="register()" style="margin-left:20px;"> <span class="glyphicon glyphicon-plus" aria-hidden="true" class="btn btn-info btn-lg" >Add Patient</span></button>
+			
+			<br /><br />
+			<button class="btn btn-primary" "   ng-click="attend()" style="margin-left:20px;"> <span class="glyphicon glyphicon" aria-hidden="true" class="btn btn-info btn-lg"  data-toggle="modal" data-target="#myModal" >Attend Patient</span></button>
+			<br />
+			<br />
+			<button class="btn btn-primary"   ng-click="view()" style="margin-left:20px;"> <span class="glyphicon glyphicon" aria-hidden="true" class="btn btn-info btn-lg"  data-toggle="modal" data-target="#myModal" >View Submited Tests</span></button>
+				<li role="presentation" class="divider"></li>
+			<li><a><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Logout Page</a></li>
+		</ul>
+		
+	</div><!--/.sidebar-->
+
+</div>
+
+		<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+	<div  ng-controller="registerPanel" class="panel panel-default">
+	<br />
+		<div class="panel-heading">{{ title }}</div>
+		<div class="panel-body">
+			
+			<div class="row">
+				<div class="col-sm-3"></div>
+				<div class="col-sm-6"><form method="POST" ng-submit="formSubmit()" action="">
+
+
+        <div class="form-group">
+        <label >Firstname</label>
+        <input  class="form-control" ng-model="fname"  type="text" name="fname" placeholder="firstname" required>
+        </div>
+        <div class="form-group">
+        <label >Middlename</label>
+        <input  class="form-control"  ng-model="mname" type="text" name="mname" placeholder="middlename" required>
+        </div>
+        <div class="form-group">
+        <label >Lastname</label>
+        <input  class="form-control" ng-model="lname" type="text" name="lname" placeholder="lastname" required>
+        </div>
+        <div class="form-group">
+        <label >Email</label>
+        <input  class="form-control" ng-model="email" type="email" name="email" placeholder="email" required>
+        </div>
+        
+         <div class="form-group">
+        <label for="username">Phone number</label>
+        
+
+        <input  class="form-control"  ng-model="contact" type="text" name="contact" placeholder="phn no" 
+         required>
+        </div>
+         <div class="form-group">
+        <label for="password">Date Of Birth</label>
+        <input  class="form-control"  ng-model="dob" type="text" name="dob" placeholder="DD/MM/YYYY" required>
+        </div>
+        
+          
+        <br />
+        <button type="submit" name="submit" class="btn btn-primary">SAVE</button>
+        <br /> <br />
+</form></div></div>
+				<div class="col-sm-3"></div>
+			</div>
+		</div>
+	</div>		
+		
+		
+	</div><!--/.main-->
+	<div id="result"></div>
+</body>
+<script type="text/javascript" src="js/angular.js"></script>
+<script>
+		var app=angular.module("myApp",[]);
+		
+		app.controller("side_bar_menu",function($scope,$window){
+
+			$scope.register=function(){
+				$window.location.href="register.html";
+			};
+			$scope.attend=function(){
+				$window.location.href="attend.html";
+			};
+
+			$scope.view=function(){
+				$window.location.href="view.php";
+			};
+
+
+   		});
+
+
+
+	app.controller("registerPanel",function($scope,$http,$window){	  
+	$scope.title="New Patient Registration";	
+	$scope.formSubmit = function() {
+	$scope.remember="";
+		var user={
+		"fname":$scope.fname,
+		"mname":$scope.mname,
+		"lname":$scope.lname,
+		"email":$scope.email,
+		"contact":$scope.contact,			
+		"dob":$scope.dob
+		};
+        $http({
+          method  : 'POST',
+          url     : 'register.php',
+          data    : user,
+          headers : { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' } 
+         }).then(function mySuccess(response) {		
+						alert("Registration Completed");			
+						$window.location.href = 'index2.php';
+			
+
+          },function myError(response){
+			alert("Registration success");
+				$window.location.href = 'index2.php';
+		
+          });
+        
+        };
+	});
+	</script>
+<script type="text/javascript" src="../jquery/jquery.js"></script>
+<!-- <script type="text/javascript">
+	
+	function allow(id,payment){
+	    var URL="allow_payment.php?id=";
+		var id2=id.toString();
+		    URL=URL.concat(id2); 
+		    URL=URL.concat("&payment=");
+		    URL=URL.concat(payment);  
+	  $.ajax({
+      url:URL,
+      success:(function (result){
+$('#result').html(result);
+    
+      })
+    });
+
+	}
+</script> -->
+</html>

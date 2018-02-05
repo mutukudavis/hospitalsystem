@@ -1,0 +1,81 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Healthix</title>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="js/angularjs.js"></script>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+</head>
+
+<body>
+<div ng-app="myApp">
+<div ng-controller="loginPanel">
+	<div class="row" style="margin-top:150px;">
+		<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+			<div class="login-panel panel panel-default">
+				<div class="panel-heading"  style="font-family:courier"><center>Doctors login</center></div>
+				<div class="panel-body">
+					<form role="form"  method="POST" ng-submit="submitForm()">
+						<fieldset>
+							<div class="form-group">
+								<input  ng-model="username" class="form-control" placeholder="Username" name="username" type="username" autofocus="">
+							</div>
+							<div class="form-group">
+								<input ng-model="password" class="form-control" placeholder="Password" name="password" type="password" value="">
+							</div>
+								<p style="color: red">{{ remember }}</p>
+							<div class="checkbox">
+								<label>
+									<input ng-model="remember" name="remember" type="checkbox" value="Remember Me">Remember Me
+									
+								</label>
+							</div>
+							<input ng-model="login"  type="submit" name="login" value="Login"  class="btn btn-primary">
+						</fieldset>
+					</form>
+				</div>
+			</div>
+		</div><!-- /.col-->
+	</div><!-- /.row -->	
+	</div>	
+</div>
+<script >
+		
+	var  app=angular.module("myApp",[]);
+	app.controller("loginPanel",function($scope,$http,$window){		
+	$scope.submitForm = function() {
+	$scope.remember="";
+		var user={
+		"username":$scope.username,
+		"password":$scope.password
+		};
+        $http({
+          method  : 'POST',
+          url     : 'login_auth.php',
+          data    : user,
+          headers : { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' } 
+         }).then(function mySuccess(response) {
+				if(response.data.login=="success"){
+						$scope.remember="success";
+						$window.location.href = 'index2.php';
+				}else{
+					$scope.remember="Wrong Credentials";
+				}
+
+          },function myError(response){
+
+          	
+          });
+        
+        };
+	});
+	</script>
+	
+</body>
+
+</html>

@@ -1,0 +1,172 @@
+<?php
+require('connection.php');
+session_start();
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Healthix</title>
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/datepicker3.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+
+<!--Icons-->
+<script src="js/lumino.glyphs.js"></script>
+
+</head>
+
+<body>
+<div ng-app="myApp">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                
+                <ul class="user-menu">
+                    <li class="dropdown pull-right">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> User <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Profile</a></li>
+                            <li><a href="#"><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"></use></svg> Settings</a></li>
+                            <li><a href="#"><svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+                            
+        </div><!-- /.container-fluid -->
+    </nav>
+        
+       <div ng-controller="side_bar_menu">
+        <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+        <br /><br /><br />
+        <ul class="nav menu">
+            <li  ng-model="home"><a><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard</a></li>
+            
+            <li ng-model="users"><a> <svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Users</a></li>
+            <br />
+
+             <button class="btn btn-primary"  ng-click="register()" style="margin-left:20px;"> <span class="glyphicon glyphicon-plus" aria-hidden="true" class="btn btn-info btn-lg" >Add Patient</span></button>
+            
+            <br /><br />
+            <button class="btn btn-primary" "   ng-click="attend()" style="margin-left:20px;"> <span class="glyphicon glyphicon" aria-hidden="true" class="btn btn-info btn-lg"  data-toggle="modal" data-target="#myModal" >Attend Patient</span></button>
+            <br />
+            <br />
+            <button class="btn btn-primary"   ng-click="view()" style="margin-left:20px;"> <span class="glyphicon glyphicon" aria-hidden="true" class="btn btn-info btn-lg"  data-toggle="modal" data-target="#myModal" >View Submited Tests</span></button>
+                <li role="presentation" class="divider"></li>
+            <li><a><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Logout Page</a></li>
+        </ul>
+        
+    </div><!--/.sidebar-->
+
+</div>
+        <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+<div ng-controller="attend_table">
+    <div class="panel panel-default">
+    
+
+        <div class="panel-heading">{{ title }}</div>
+        <div class="panel-body">
+            <style>
+                table, th , td {
+                  border: 1px solid grey;
+                  border-collapse: collapse;
+                  padding: 5px;
+                }
+                table tr:nth-child(odd) {
+                  background-color: #f1f1f1;
+                }
+                table tr:nth-child(even) {
+                  background-color: #ffffff;
+                }
+                .att-search{
+                        margin-bottom: 10px;
+                        padding:5px; 
+                    }
+</style>
+<input height="50px" type="text"   placeholder="search" class="att-search" name="search" ng-model="search">
+        <table width="100%"  class="table-striped">
+                <tr>
+                    <th style="font-family:courier">Id</th>
+                    <th style="font-family:courier">Firstname</th>
+                    <th style="font-family:courier">Middlename</th>
+                    <th style="font-family:courier">Lastname</th>
+                    <th style="font-family:courier">Email</th>
+                    <th style="font-family:courier">phone No</th>
+                    <th style="font-family:courier">DOB</th>
+                    <th style="font-family:courier">date</th>
+                    
+                </tr>
+            
+                    <tr  ng-repeat="x in attends | filter: search">  
+                                <td data-field="id" data-sortable="true">{{ x.id }}</td>
+                                <td data-field="fname"  data-sortable="true">{{ x.fname }}</td>
+                                <td data-field="mname" data-sortable="true"> {{ x.mname }}</td>
+                                <td data-field="lname"  data-sortable="true">{{ x.lname }}</td>
+                                <td data-field="email" data-sortable="true">{{ x.email }}</td>
+                                <td data-field="contact"  data-sortable="true">{{ x.contact }}</td>
+                                <td data-field="contact"  data-sortable="true">{{ x.dob }}</td>
+                                <td data-field="date" data-sortable="true">{{ x.date }}</td>
+</tr>
+             
+</table>
+</div>
+        
+            </div>
+        </div>
+    </div>      
+         </div>
+<script type="text/javascript" src="js/angular.js"></script>
+        <script>
+        var app=angular.module("myApp",[]);
+        app.controller("side_bar_menu",function($scope,$window){
+
+            $scope.register=function(){
+                $window.location.href="register.html";
+            };
+            $scope.attend=function(){
+                $window.location.href="attend.html";
+            };
+
+            $scope.view=function(){
+                $window.location.href="view.php";
+            };
+
+
+        });
+        app.controller("attend_table",function($scope,$http){
+        $scope.title="Attend Patients"
+        $http({
+          method  : 'GET',
+          url     : 'attend.php',
+          headers : { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' } 
+         }).then(function mySuccess(response) {
+                $scope.attends=response.data.attends;
+            
+          },function myError(response){
+
+            
+          });
+
+
+         });
+
+
+</script>
+   <!--/.main-->  
+
+
+    <div id="result"></div>
+
+</body>
+<script type="text/javascript" src="../jquery/jquery.js"></script>
+
+</html>

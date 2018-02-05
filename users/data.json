@@ -1,0 +1,27 @@
+[
+      {
+         "id": 28,
+         "fname": "mutuku",
+         "mname": "davis",
+         "lname": "mutinda",
+         "email": "davismutinda4@gmail.com",
+         "contact": "0792101386",
+         "date": "25/06/1996"
+        
+       },
+      {
+         "id": 29,
+         "fname": "mutisya",
+         "mname": "jeremiah",
+         "lname": "mutuku",
+         "email": "jer@gmail.com",
+         "contact": "0712577215",
+         "date": "23/3/1987"
+        
+       },
+     { 
+      "id":0 ,
+        "username": "----",
+        "category": "----"
+       }
+       ]   
